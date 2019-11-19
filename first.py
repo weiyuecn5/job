@@ -51,9 +51,40 @@ def upshuju():
         # time.sleep(0.05)
     conn.close()
 
+#迁移数据
+def copyshuju():
+    conn = sqlite3.connect('db.sqlite3') #链接数据库
+    c = conn.cursor()
+    conn1 = sqlite3.connect('db2.sqlite3') #链接数据库
+    d = conn1.cursor()
+    datas=d.execute("SELECT * from pad_shujuku")
+    for data in datas:
+        print(data[0], data[1], data[2], data[3], data[4])
+        sql = "INSERT INTO blog_shujuku (账号编号,石头数量,等级,更新时间,宠物,已卖,买家,价格) VALUES ('%s','%s','%s','%s','%s','%s','','')" % (
+            data[0], data[1], data[2], data[3], data[4],'否')
+        c.execute(sql)
+        conn.commit()
+        # break
+    conn.close()
 
-
+def copyduizhao():
+    conn = sqlite3.connect('db.sqlite3') #链接数据库
+    c = conn.cursor()
+    conn1 = sqlite3.connect('db2.sqlite3') #链接数据库
+    d = conn1.cursor()
+    datas=d.execute("SELECT * from pad_duizhao")
+    for data in datas:
+        print(data[0],data[1],data[2])
+        sql = "INSERT INTO blog_duizhao (宠物编号,宠物名字,宠物价值) VALUES ('%s','%s','%s')" % (
+            data[0], data[1], data[2])
+        c.execute(sql)
+        conn.commit()
+        # break
+    conn.close()
 #更新数据
-upshuju()
+# upshuju()
 #清除已卖或者被封
-isbuy()
+# isbuy()
+
+copyshuju()
+copyduizhao()
